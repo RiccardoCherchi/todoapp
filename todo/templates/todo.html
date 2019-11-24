@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block head_title %}Home | {{ block.super }}{% endblock %}
+{% block content %}
+    <div id="container">
+      <h1>To-do List <i class="fa fa-plus"></i></h1>
+{#      <input type="text" placeholder="Aggiungi qualcosa alla lista"/>#}
+        <form method="post">
+            {% csrf_token %}
+            {{ form }}
+        </form>
+      <ul>
+          {% if messages %}
+            {% for i in messages %}
+                <li id="message" class="{{ i.tags }} pl-3">{{ i }}</li>
+            {% endfor %}
+        {% endif %}
+        {% for todo in todos %}
+          <li><a href="{% url 'delete-todo' todo.pk %}"><i class='fa fa-trash-alt'></i></a>{{ todo }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+{% endblock %}
+{% block scripts %}
+<script>
+  $("h1 i").on("click", function() {
+    $(this).toggleClass("click-icon");
+    $("input").fadeToggle()
+})
+</script>
+{% endblock %}
